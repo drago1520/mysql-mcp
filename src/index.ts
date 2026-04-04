@@ -7,10 +7,7 @@ import { z } from "zod";
 const url = process.env.MYSQL_URL;
 if (!url) throw new Error("MYSQL_URL is required");
 
-const pool = mysql.createPool({
-  uri: url,
-  waitForConnections: true,
-});
+const connection = await mysql.createConnection(url);
 
 const server = new McpServer({ name: "mysql-mcp", version: "0.1.0" });
 
@@ -30,17 +27,17 @@ server.registerTool(
   "mysql_query",
   {
     description: "Run a read-only MySQL query.",
-    inputSchema: z.object({ sql: z.string() })
+    inputSchema: z.object({ sql: z.string() }),
   },
   async ({ sql }) => {
     ensureReadOnly(sql);
 
-    const [rows] = await pool.query(sql);
+    const [rows] = await connection.query(sql);
 
     return {
-      content: [{ type: "text", text: JSON.stringify(rows, null, 2) }]
+      content: [{ type: "text", text: JSON.stringify(rows, null, 2) }],
     };
-  }
+  },
 );
 
 await server.connect(new StdioServerTransport());

@@ -2,6 +2,11 @@
 
 Minimal read-only MySQL MCP server.
 
+This repository is the simplest and fastest way to connect MySQL to your AI agent:
+
+1. Provide a `MYSQL_URL` connection string (with or without a specific database).
+2. Run one command to add it to your agent.
+
 It exposes one tool:
 
 - `mysql_query`
@@ -9,6 +14,8 @@ It exposes one tool:
 Allowed queries start with `SELECT`, `SHOW`, `DESCRIBE`, `EXPLAIN`, or `WITH`.
 
 ## Install in Codex
+
+Add this MCP server to your agent in one command:
 
 If MySQL runs on your machine:
 
@@ -24,7 +31,7 @@ codex mcp add mysql -- docker run --rm -i -e MYSQL_URL=mysql://USER:PASSWORD@hos
 
 ## MYSQL_URL
 
-`MYSQL_URL` is used exactly as provided.
+`MYSQL_URL` is used exactly as provided, so you can connect either:
 
 Without a database name:
 
@@ -39,35 +46,4 @@ With a database name:
 
 ```bash
 mysql://USER:PASSWORD@HOST:3306/my_db
-```
-
-## Publish
-
-This repo already includes
-[`publish-ghcr.yml`](.github/workflows/publish-ghcr.yml).
-
-When you push to `main`, GitHub Actions publishes:
-
-```bash
-ghcr.io/drago1520/mysql-mcp:latest
-```
-
-and also a branch tag:
-
-```bash
-ghcr.io/drago1520/mysql-mcp:main
-```
-
-To make the image publicly pullable by everyone:
-
-1. Push this repository to GitHub.
-2. Let the `Publish GHCR Image` workflow run once on `main`.
-3. Open GitHub `Packages` for this repository owner.
-4. Open the `mysql-mcp` package.
-5. Change package visibility to `Public`.
-
-Then anyone can pull it with:
-
-```bash
-docker pull ghcr.io/drago1520/mysql-mcp:latest
 ```

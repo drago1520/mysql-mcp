@@ -4,6 +4,8 @@ Minimal read-only MySQL MCP server.
 
 This repository is the simplest and fastest way to connect MySQL to your AI agent:
 
+**Everything is local and private**: your agent talks to this MCP server on your machine.
+
 1. Provide a `MYSQL_URL` connection string (with or without a specific database).
 2. Run one command to add it to your agent.
 
@@ -13,21 +15,93 @@ It exposes one tool:
 
 Allowed queries start with `SELECT`, `SHOW`, `DESCRIBE`, `EXPLAIN`, or `WITH`.
 
-## Install in Codex
+## Get started
 
-Add this MCP server to your agent in one command:
+### 1) Pick your MySQL host
 
 If MySQL runs on your machine:
+
+```bash
+MYSQL_URL=mysql://USER:PASSWORD@HOST:PORT
+```
+
+If MySQL runs in Docker (default host network from your MCP container):
+
+```bash
+MYSQL_URL=mysql://USER:PASSWORD@host.docker.internal:PORT
+```
+
+### 2) Add it to your agent
+
+Replace `HOST` with `host.docker.internal` if your MySQL runs in Docker.
+
+<details>
+<summary>GitHub Copilot Connect (VS Code)</summary>
+
+`.vscode/mcp.json`
+
+```json
+{
+  "servers": {
+    "mysql": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "-e",
+        "MYSQL_URL=mysql://USER:PASSWORD@HOST:PORT",
+        "ghcr.io/drago1520/mysql-mcp:latest"
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>Codex</summary>
 
 ```bash
 codex mcp add mysql -- docker run --rm -i -e MYSQL_URL=mysql://USER:PASSWORD@HOST:PORT ghcr.io/drago1520/mysql-mcp:latest
 ```
 
-If MySQL runs on Docker (default host network):
+</details>
+
+<details>
+<summary>Claude Code</summary>
 
 ```bash
-codex mcp add mysql -- docker run --rm -i -e MYSQL_URL=mysql://USER:PASSWORD@host.docker.internal:PORT ghcr.io/drago1520/mysql-mcp:latest
+claude mcp add --transport stdio --env MYSQL_URL=mysql://USER:PASSWORD@HOST:PORT mysql -- docker run --rm -i -e MYSQL_URL=mysql://USER:PASSWORD@HOST:PORT ghcr.io/drago1520/mysql-mcp:latest
 ```
+
+</details>
+
+<details>
+<summary>Google AI (Gemini CLI)</summary>
+
+`~/.gemini/settings.json`
+
+```json
+{
+  "mcpServers": {
+    "mysql": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "-e",
+        "MYSQL_URL=mysql://USER:PASSWORD@HOST:PORT",
+        "ghcr.io/drago1520/mysql-mcp:latest"
+      ]
+    }
+  }
+}
+```
+
+</details>
 
 ## MYSQL_URL
 

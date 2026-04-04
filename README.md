@@ -13,13 +13,13 @@ Allowed queries start with `SELECT`, `SHOW`, `DESCRIBE`, `EXPLAIN`, or `WITH`.
 If MySQL runs on your machine:
 
 ```bash
-codex mcp add mysql -- docker run --rm -i -e MYSQL_URL=mysql://USER:PASSWORD@host.docker.internal:3306 ghcr.io/drago1520/mysql-mcp:latest
+codex mcp add mysql -- docker run --rm -i -e MYSQL_URL=mysql://USER:PASSWORD@HOST:PORT ghcr.io/drago1520/mysql-mcp:latest
 ```
 
-If MySQL run on Docker:
+If MySQL runs on Docker (default host network):
 
 ```bash
-codex mcp add mysql -- docker run --rm -i -e MYSQL_URL=mysql://USER:PASSWORD@MYSQL_CONTAINER_NAME:3306 ghcr.io/drago1520/mysql-mcp:latest
+codex mcp add mysql -- docker run --rm -i -e MYSQL_URL=mysql://USER:PASSWORD@host.docker.internal:PORT ghcr.io/drago1520/mysql-mcp:latest
 ```
 
 ## MYSQL_URL

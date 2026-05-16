@@ -73,7 +73,11 @@ codex mcp add mysql -- docker run --rm -i -e MYSQL_URL=mysql://USER:PASSWORD@HOS
 <summary>Claude Code</summary>
 
 ```bash
-claude mcp add --transport stdio --env MYSQL_URL=mysql://USER:PASSWORD@HOST:PORT mysql -- docker run --rm -i -e MYSQL_URL=mysql://USER:PASSWORD@HOST:PORT ghcr.io/drago1520/mysql-mcp:latest
+claude mcp add NAME --transport stdio \
+  --env "MYSQL_URL=mysql://USER:PASS@HOST:PORT" \
+  -- docker run --rm -i \
+  -e "MYSQL_URL=mysql://USER:PASS@HOST:PORT" \
+  ghcr.io/drago1520/mysql-mcp:latest
 ```
 
 </details>

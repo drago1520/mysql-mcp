@@ -79,6 +79,13 @@ claude mcp add NAME --transport stdio \
   -e "MYSQL_URL=mysql://USER:PASS@HOST:PORT" \
   ghcr.io/drago1520/mysql-mcp:latest
 ```
+with Infisical for env injection:
+```bash
+claude mcp add MCP-NAME --transport stdio -- \
+  infisical.exe run --projectId PROJECT_ID --domain DOMAIN_IF_SELF_HOST --path PATH --env=prod -- \
+  docker run --rm -i -e MYSQL_URL ghcr.io/drago1520/mysql-mcp:latest
+```
+*will fail once `infisical login` expires.
 
 </details>
 

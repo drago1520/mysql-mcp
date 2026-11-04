@@ -41,3 +41,16 @@ server.registerTool(
 );
 
 await server.connect(new StdioServerTransport());
+
+// The open MySQL connection keeps the process alive after the client goes away,
+// so `docker run --rm -i` containers pile up. Exit when stdin closes or on a signal
+// (PID 1 in a container ignores SIGTERM/SIGINT unless handled).
+function shutdown() {
+  connection.destroy();
+  process.exit(0);
+}
+
+process.stdin.on("end", shutdown);
+process.stdin.on("close", shutdown);
+process.on("SIGTERM", shutdown);
+process.on("SIGINT", shutdown);
